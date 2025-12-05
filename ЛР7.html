@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOODSTER - Собрать ланч</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* стиль ланча*/
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #000000;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            color: #008c28;
+            font-size: 40px;
+            font-weight: 800;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        nav li {
+            margin-left: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #000000;
+            font-weight: 500;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: tomato;
+        }
+
+        #active {
+            color: tomato;
+        }
+
+        main {
+            padding: 0;
+            flex: 1;
+        }
+
+        section {
+            margin-bottom: 0;
+            background-color: #fff;
+            padding: 60px 30px;
+            border-radius: 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h2 {
+            color: #000000;
+            margin-bottom: 20px;
+            font-size: 45px;
+            font-weight: 500;
+            border-bottom: 2px solid #000000;
+            padding-bottom: 10px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: #f1eee9;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .filter-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .filter-btn.active {
+            background-color: tomato;
+            color: white;
+        }
+
+        .dishes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .dish-card {
+            display: flex;
+            flex-direction: column;
+            padding: 30px 40px;
+            border-radius: 35px;
+            cursor: pointer;
+            background-color: white;
+            filter: drop-shadow(17px 19px 24px rgba(0, 0, 0, 0.13));
+        }
+
+        .dish-card:hover {
+            border: 2px solid tomato;
+        }
+
+        .dish-card:hover button {
+            background-color: tomato;
+        }
+
+        .dish-card img {
+            width: 100%;
+            border-radius: 35px;
+        }
+
+        .dish-card .price {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .dish-card .name {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .dish-card .weight {
+            color: gray;
+            margin-top: 5px;
+        }
+
+        .dish-card button {
+            background-color: #f1eee9;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: auto;
+            margin-top: 15px;
+        }
+
+        footer {
+            background-color: #000000;
+            color: white;
+            padding: 40px 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .contact-info p {
+            margin-bottom: 10px;
+        }
+
+        .contact-info a {
+            color: #008c28;
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Стили для формы заказа */
+        #order-form {
+            background-color: #fff;
+            padding: 60px 30px;
+        }
+
+        .order-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .order-title {
+            color: #000000;
+            margin-bottom: 40px;
+            font-size: 45px;
+            font-weight: 500;
+            border-bottom: 2px solid #000000;
+            padding-bottom: 10px;
+        }
+
+        .form-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #000000;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        select:required:invalid {
+            color: #6c757d;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group, .radio-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input, .radio-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .radio-group label {
+            margin-bottom: 0;
+        }
+
+        .delivery-time-options {
+            margin-bottom: 20px;
+        }
+
+        .time-input {
+            margin-top: 15px;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-reset {
+            background-color: #f1eee9;
+            color: #000000;
+        }
+
+        .btn-submit {
+            background-color: #008c28;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        /* Стили для раздела "Ваш заказ" */
+        .order-summary {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-category {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .order-dish {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .order-total {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #ddd;
+        }
+
+        .no-selection {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        /* Стили для блока с комбо */
+        .combos-section {
+            background-color: #fff;
+            padding: 60px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .combos-section h2 {
+            text-align: center;
+            border-bottom: none;
+            font-weight: 700;
+            margin-bottom: 50px;
+        }
+
+        .combos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px 20px;
+            width: 100%;
+        }
+
+        .combo-card {
+            background-color: transparent;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .combo-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .combo-title {
+            display: none;
+        }
+
+        .combo-dishes {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .combo-dish {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 70px;
+        }
+
+        .combo-emoji {
+            width: 45px; /* Размер иконок */
+            height: 45px;
+            margin-bottom: 10px;
+            line-height: 1;
+            transition: transform 0.07s;
+            object-fit: contain; /* Чтобы изображения не искажались */
+        }
+
+        .combo-dish:hover .combo-emoji {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        .combo-dish-caption {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.2;
+            color: #000;
+        }
+
+        /* Стили для информации о десерте */
+        .dessert-info {
+            text-align: center;
+            font-size: 16px;
+            color: #6c757d;
+            margin-top: 40px;
+            font-style: italic;
+        }
+
+        /* Стили для уведомлений */
+        .notification-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .notification {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification-image {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background-color: #f1eee9;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+        }
+
+        .notification-text {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .notification-btn {
+            background-color: #008c28;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .notification-btn:hover {
+            background-color: tomato;
+            color: white;
+        }
+
+        /* Адаптивность для страницы "Собрать ланч" */
+        @media (max-width: 800px) {
+            .dishes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .combos-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            nav ul {
+                justify-content: space-between;
+            }
+            
+            h1 {
+                text-align: center;
+            }
+            
+            .form-sections {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .dishes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .combos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav a {
+                font-size: 24px;
+            }
+            
+            h2 {
+                text-align: center;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>FOODSTER</h1>
+                <nav>
+                    <ul>
+                        <li><a href="ЛР1.html">Главная</a></li>
+                        <li><a href="#" id="active">Собрать ланч</a></li>
+                        <li><a href="#">Заказы</a></li>
+                        <li><a href="#contacts">Контакты</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Блок с комбо -->
+<section class="combos-section">
+    <div class="container">
+        <h2>Доступные для заказа комбо</h2>
+        <div class="combos-grid">
+            <!-- Комбо 1 -->
+            <div class="combo-card">
+                <div class="combo-title">Комбо 1</div>
+                <div class="combo-dishes">
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\soup.png" alt="Суп">
+                        <div class="combo-dish-caption">Суп</div>
+                    </div>
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\main.png" alt="Главное блюдо">
+                        <div class="combo-dish-caption">Главное блюдо</div>
+                    </div>
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\salad.png" alt="Салат">
+                        <div class="combo-dish-caption">Салат</div>
+                    </div>
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\drink.png" alt="Напиток">
+                        <div class="combo-dish-caption">Напиток</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Комбо 2 -->
+            <div class="combo-card">
+                <div class="combo-title">Комbo 2</div>
+                <div class="combo-dishes">
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\main.png" alt="Главное блюдо">
+                        <div class="combo-dish-caption">Главное блюдо</div>
+                    </div>
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\salad.png" alt="Салат">
+                        <div class="combo-dish-caption">Салат</div>
+                    </div>
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\drink.png" alt="Напиток">
+                        <div class="combo-dish-caption">Напиток</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Комбо 3 -->
+            <div class="combo-card">
+                <div class="combo-title">Комбо 3</div>
+                <div class="combo-dishes">
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\soup.png" alt="Суп">
+                        <div class="combo-dish-caption">Суп</div>
+                    </div>
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\main.png" alt="Главное блюдо">
+                        <div class="combo-dish-caption">Главное блюдо</div>
+                    </div>
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\drink.png" alt="Напиток">
+                        <div class="combo-dish-caption">Напиток</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Комбо 4 -->
+            <div class="combo-card">
+                <div class="combo-title">Комбо 4</div>
+                <div class="combo-dishes">
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\main.png" alt="Главное блюдо">
+                        <div class="combo-dish-caption">Главное блюдо</div>
+                    </div>
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\drink.png" alt="Напиток">
+                        <div class="combo-dish-caption">Напиток</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Комбо 5 -->
+            <div class="combo-card">
+                <div class="combo-title">Комбо 5</div>
+                <div class="combo-dishes">
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\soup.png" alt="Суп">
+                        <div class="combo-dish-caption">Суп</div>
+                    </div>
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\salad.png" alt="Салат">
+                        <div class="combo-dish-caption">Салат</div>
+                    </div>
+                    <div class="combo-dish">
+                        <img class="combo-emoji" src="D:\Политех\Веб\icons\drink.png" alt="Напиток">
+                        <div class="combo-dish-caption">Напиток</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dessert-info">
+            <img class="combo-emoji" src="D:\Политех\Веб\icons\desert.png" alt="Десерт" style="display: inline-block; vertical-align: middle; width: 24px; height: 24px;">
+            Десерт — можно добавить к любому заказу
+        </div>
+    </div>
+</section>
+
+        <!-- Остальные секции -->
+        <section id="soups">
+            <div class="container">
+                <h2>Выберите первое блюдо</h2>
+                <div class="filters" id="soup-filters">
+                    <button class="filter-btn" data-kind="all">Все</button>
+                    <button class="filter-btn" data-kind="fish">Рыбный</button>
+                    <button class="filter-btn" data-kind="meat">Мясной</button>
+                    <button class="filter-btn" data-kind="veg">Вегетарианский</button>
+                </div>
+                <div class="dishes-grid" id="soups-container">
+                    <!-- Блюда будут загружены через API -->
+                </div>
+            </div>
+        </section>
+
+        <section id="main-dishes">
+            <div class="container">
+                <h2>Выберите второе блюдо</h2>
+                <div class="filters" id="main-filters">
+                    <button class="filter-btn" data-kind="all">Все</button>
+                    <button class="filter-btn" data-kind="fish">Рыбное</button>
+                    <button class="filter-btn" data-kind="meat">Мясное</button>
+                    <button class="filter-btn" data-kind="veg">Вегетарианское</button>
+                </div>
+                <div class="dishes-grid" id="main-dishes-container">
+                    <!-- Блюда будут загружены через API -->
+                </div>
+            </div>
+        </section>
+
+        <section id="salads">
+            <div class="container">
+                <h2>Салаты и стартеры</h2>
+                <div class="filters" id="salad-filters">
+                    <button class="filter-btn" data-kind="all">Все</button>
+                    <button class="filter-btn" data-kind="fish">Рыбный</button>
+                    <button class="filter-btn" data-kind="meat">Мясной</button>
+                    <button class="filter-btn" data-kind="veg">Вегетарианский</button>
+                </div>
+                <div class="dishes-grid" id="salads-container">
+                    <!-- Блюда будут загружены через API -->
+                </div>
+            </div>
+        </section>
+
+        <section id="drinks">
+            <div class="container">
+                <h2>Выберите напиток</h2>
+                <div class="filters" id="drink-filters">
+                    <button class="filter-btn" data-kind="all">Все</button>
+                    <button class="filter-btn" data-kind="cold">Холодный</button>
+                    <button class="filter-btn" data-kind="hot">Горячий</button>
+                </div>
+                <div class="dishes-grid" id="drinks-container">
+                    <!-- Блюда будут загружены через API -->
+                </div>
+            </div>
+        </section>
+
+        <section id="desserts">
+            <div class="container">
+                <h2>Десерты</h2>
+                <div class="filters" id="dessert-filters">
+                    <button class="filter-btn" data-kind="all">Все</button>
+                    <button class="filter-btn" data-kind="small">Маленькая порция</button>
+                    <button class="filter-btn" data-kind="medium">Средняя порция</button>
+                    <button class="filter-btn" data-kind="large">Большая порция</button>
+                </div>
+                <div class="dishes-grid" id="desserts-container">
+                    <!-- Блюда будут загружены через API -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Форма заказа -->
+    <section id="order-form">
+        <div class="order-container">
+            <h2 class="order-title">Сделать заказ</h2>
+            <form id="order-form-element" action="https://httpbin.org/post" method="POST">
+                <div class="form-sections">
+                    <!-- Блок с заказом клиента -->
+                    <div class="form-section">
+                        <h3 class="section-title">Ваш заказ</h3>
+                        
+                        <div class="order-summary" id="order-summary">
+                            <!--  выбранный заказ -->
+                            <div class="no-selection">Ничего не выбрано</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="comments">Комментарии к заказу</label>
+                            <textarea id="comments" name="comments" placeholder="Ваши пожелания к заказу"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Блок с данными клиента -->
+                    <div class="form-section">
+                        <h3 class="section-title">Ваши данные</h3>
+                        
+                        <div class="form-group">
+                            <label for="name">Имя</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="newsletter" name="newsletter" checked>
+                            <label for="newsletter">Получать информацию о скидках и акциях</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Номер телефона</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Адрес доставки</label>
+                            <input type="text" id="address" name="address" required>
+                            <p class="info-text">Доставка осуществляется только по Москве</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Время доставки:</label>
+                            <div class="delivery-time-options">
+                                <div class="radio-group">
+                                    <input type="radio" id="asap" name="delivery_time" value="asap" required>
+                                    <label for="asap">Как можно скорее</label>
+                                </div>
+                                <div class="radio-group">
+                                    <input type="radio" id="specific_time" name="delivery_time" value="specific_time" required>
+                                    <label for="specific_time">К указанному времени</label>
+                                </div>
+                            </div>
+                            
+                            <div class="time-input">
+                                <label for="delivery_time_input">Укажите время доставки</label>
+                                <input type="time" id="delivery_time_input" name="delivery_time_input" min="07:00" max="23:00" step="300">
+                                <p class="info-text">Доступное время доставки с 7:00 до 23:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="reset" class="btn btn-reset">Сбросить</button>
+                    <button type="submit" class="btn btn-submit">Отправить</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer id="contacts">
+        <div class="container">
+            <div class="footer-content">
+                <div class="contact-info">
+                    <h3>Контакты</h3>
+                    <p>Адрес: Москва, ул. Прянишникова 2А</p>
+                    <p>Телефон: <a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+                    <p>Время работы: Пн-Пт 9:00-18:00</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+       // Функция для загрузки блюд с API
+async function loadDishes() {
+    try {
+        // Делаем запрос к API
+        const response = await fetch('https://edu.std-900.ist.mospolytech.ru/labs/api/dishes');
+        
+        // Проверяем успешность запроса
+        if (!response.ok) {
+            throw new Error(`Ошибка при загрузке данных: ${response.status}`);
+        }
+        
+        // Преобразуем ответ в JSON
+        const data = await response.json();
+        
+        // Возвращаем данные
+        return data;
+    } catch (error) {
+        console.error('Ошибка загрузки данных с API:', error);
+        return [];
+    }
+}
+
+// Глобальная переменная для хранения всех блюд
+let allDishes = [];
+
+// Объект для хранения выбранных блюд
+let selectedDishes = {
+    soup: null,
+    main: null,
+    salad: null,
+    drink: null,
+    dessert: null
+};
+
+// Объект для хранения активных фильтров
+let activeFilters = {
+    soup: 'all',
+    main: 'all',
+    salad: 'all',
+    drink: 'all',
+    dessert: 'all'
+};
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', async () => {
+    // Загружаем блюда с API
+    allDishes = await loadDishes();
+    
+    // Преобразуем категории из формата API в нужный формат
+    allDishes = allDishes.map(dish => {
+        let category;
+        switch(dish.category) {
+            case 'soup': category = 'soup'; break;
+            case 'main-course': category = 'main'; break;
+            case 'salad': category = 'salad'; break;
+            case 'drink': category = 'drink'; break;
+            case 'dessert': category = 'dessert'; break;
+            default: category = dish.category;
+        }
+        
+        return {
+            keyword: dish.keyword,
+            name: dish.name,
+            price: dish.price,
+            category: category,
+            count: dish.count,
+            image: dish.image,
+            kind: dish.kind
+        };
+    });
+    
+    // Устанавливаем активный класс для кнопки "Все" в каждом фильтре
+    document.querySelectorAll('.filters .filter-btn[data-kind="all"]').forEach(btn => {
+        btn.classList.add('active');
+    });
+    
+    // Отображаем блюда
+    renderDishes();
+    updateOrderSummary();
+    initFilters();
+    
+    // Обработчик отправки формы
+    const orderForm = document.getElementById('order-form-element');
+    orderForm.addEventListener('submit', (e) => {
+        if (!validateOrder()) {
+            e.preventDefault();
+        }
+    });
+});
+
+// сортировка блюд по алфавиту
+function sortDishesAlphabetically(dishes) {
+    return dishes.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// Функция для отображения блюд на странице
+function renderDishes() {
+    // Сортируем блюда по категориям
+    const soups = sortDishesAlphabetically(allDishes.filter(dish => dish.category === 'soup'));
+    const mainDishes = sortDishesAlphabetically(allDishes.filter(dish => dish.category === 'main'));
+    const salads = sortDishesAlphabetically(allDishes.filter(dish => dish.category === 'salad'));
+    const drinks = sortDishesAlphabetically(allDishes.filter(dish => dish.category === 'drink'));
+    const desserts = sortDishesAlphabetically(allDishes.filter(dish => dish.category === 'dessert'));
+
+    // супы
+    const soupsContainer = document.getElementById('soups-container');
+    soupsContainer.innerHTML = '';
+    const filteredSoups = filterDishes(soups, activeFilters.soup);
+    filteredSoups.forEach(soup => {
+        const dishCard = createDishCard(soup);
+        soupsContainer.appendChild(dishCard);
+    });
+
+    // основные блюда
+    const mainDishesContainer = document.getElementById('main-dishes-container');
+    mainDishesContainer.innerHTML = '';
+    const filteredMainDishes = filterDishes(mainDishes, activeFilters.main);
+    filteredMainDishes.forEach(mainDish => {
+        const dishCard = createDishCard(mainDish);
+        mainDishesContainer.appendChild(dishCard);
+    });
+
+    // салаты
+    const saladsContainer = document.getElementById('salads-container');
+    saladsContainer.innerHTML = '';
+    const filteredSalads = filterDishes(salads, activeFilters.salad);
+    filteredSalads.forEach(salad => {
+        const dishCard = createDishCard(salad);
+        saladsContainer.appendChild(dishCard);
+    });
+
+    // напитки
+    const drinksContainer = document.getElementById('drinks-container');
+    drinksContainer.innerHTML = '';
+    const filteredDrinks = filterDishes(drinks, activeFilters.drink);
+    filteredDrinks.forEach(drink => {
+        const dishCard = createDishCard(drink);
+        drinksContainer.appendChild(dishCard);
+    });
+
+    // десерты
+    const dessertsContainer = document.getElementById('desserts-container');
+    dessertsContainer.innerHTML = '';
+    const filteredDesserts = filterDishes(desserts, activeFilters.dessert);
+    filteredDesserts.forEach(dessert => {
+        const dishCard = createDishCard(dessert);
+        dessertsContainer.appendChild(dishCard);
+    });
+}
+
+// Функция для фильтрации блюд
+function filterDishes(dishes, filter) {
+    if (filter === 'all') {
+        return dishes;
+    }
+    return dishes.filter(dish => dish.kind === filter);
+}
+
+//  создание карточки блюда
+function createDishCard(dish) {
+    const dishCard = document.createElement('div');
+    dishCard.className = 'dish-card';
+    dishCard.setAttribute('data-dish', dish.keyword);
+    
+    dishCard.innerHTML = `
+        <img src="${dish.image}" alt="${dish.name}" width="300" height="200">
+        <p class="price">${dish.price}Р</p>
+        <p class="name">${dish.name}</p>
+        <p class="weight">${dish.count}</p>
+        <button>Добавить</button>
+    `;
+    
+    // обработчик клика
+    dishCard.addEventListener('click', () => {
+        selectDish(dish);
+    });
+    
+    return dishCard;
+}
+
+// Функция для выбора блюда
+function selectDish(dish) {
+    // Сохраняем выбранное блюдо в соответствующей категории
+    selectedDishes[dish.category] = dish;
+    
+    // Обновляем отображение заказа
+    updateOrderSummary();
+}
+
+// Функция для обновления сводки заказа
+function updateOrderSummary() {
+    const orderSummary = document.getElementById('order-summary');
+    orderSummary.innerHTML = '';
+    
+    // Проверка, есть ли выбранные блюда
+    const hasSelectedDishes = Object.values(selectedDishes).some(dish => dish !== null);
+    
+    if (!hasSelectedDishes) {
+        orderSummary.innerHTML = '<div class="no-selection">Ничего не выбрано</div>';
+        return;
+    }
+    
+    // выбранные блюда по категориям
+    const categories = [
+        { key: 'soup', title: 'Суп' },
+        { key: 'main', title: 'Главное блюдо' },
+        { key: 'salad', title: 'Салат или стартер' },
+        { key: 'drink', title: 'Напиток' },
+        { key: 'dessert', title: 'Десерт' }
+    ];
+    
+    let totalPrice = 0;
+    
+    categories.forEach(category => {
+        const dish = selectedDishes[category.key];
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'order-item';
+        
+        if (dish) {
+            categoryDiv.innerHTML = `
+                <div class="order-category">${category.title}</div>
+                <div class="order-dish">
+                    <span>${dish.name}</span>
+                    <span>${dish.price}Р</span>
+                </div>
+            `;
+            totalPrice += dish.price;
+        } else {
+            const notSelectedText = category.key === 'drink' ? 'Напиток не выбран' : 'Блюдо не выбрано';
+            categoryDiv.innerHTML = `
+                <div class="order-category">${category.title}</div>
+                <div class="no-selection">${notSelectedText}</div>
+            `;
+        }
+        
+        orderSummary.appendChild(categoryDiv);
+    });
+    
+    // общая стоимость
+    if (totalPrice > 0) {
+        const totalDiv = document.createElement('div');
+        totalDiv.className = 'order-total';
+        totalDiv.innerHTML = `
+            <div class="order-dish">
+                <span>Стоимость заказа</span>
+                <span>${totalPrice}Р</span>
+            </div>
+        `;
+        orderSummary.appendChild(totalDiv);
+    }
+}
+
+// Функция для инициализации фильтров
+function initFilters() {
+    // Супы
+    const soupFilters = document.getElementById('soup-filters');
+    soupFilters.addEventListener('click', (e) => {
+        if (e.target.classList.contains('filter-btn')) {
+            const filterKind = e.target.getAttribute('data-kind');
+            activeFilters.soup = filterKind;
+            
+            // Обновляем активный класс
+            document.querySelectorAll('#soup-filters .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            
+            // Перерисовываем блюда
+            renderDishes();
+        }
+    });
+
+    // Главные блюда
+    const mainFilters = document.getElementById('main-filters');
+    mainFilters.addEventListener('click', (e) => {
+        if (e.target.classList.contains('filter-btn')) {
+            const filterKind = e.target.getAttribute('data-kind');
+            activeFilters.main = filterKind;
+            
+            // Обновляем активный класс
+            document.querySelectorAll('#main-filters .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            
+            // Перерисовываем блюда
+            renderDishes();
+        }
+    });
+
+    // Салаты
+    const saladFilters = document.getElementById('salad-filters');
+    saladFilters.addEventListener('click', (e) => {
+        if (e.target.classList.contains('filter-btn')) {
+            const filterKind = e.target.getAttribute('data-kind');
+            activeFilters.salad = filterKind;
+            
+            // Обновляем активный класс
+            document.querySelectorAll('#salad-filters .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            
+            // Перерисовываем блюда
+            renderDishes();
+        }
+    });
+
+    // Напитки
+    const drinkFilters = document.getElementById('drink-filters');
+    drinkFilters.addEventListener('click', (e) => {
+        if (e.target.classList.contains('filter-btn')) {
+            const filterKind = e.target.getAttribute('data-kind');
+            activeFilters.drink = filterKind;
+            
+            // Обновляем активный класс
+            document.querySelectorAll('#drink-filters .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            
+            // Перерисовываем блюда
+            renderDishes();
+        }
+    });
+
+    // Десерты
+    const dessertFilters = document.getElementById('dessert-filters');
+    dessertFilters.addEventListener('click', (e) => {
+        if (e.target.classList.contains('filter-btn')) {
+            const filterKind = e.target.getAttribute('data-kind');
+            activeFilters.dessert = filterKind;
+            
+            // Обновляем активный класс
+            document.querySelectorAll('#dessert-filters .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            
+            // Перерисовываем блюда
+            renderDishes();
+        }
+    });
+}
+
+// Функция для проверки заказа
+function validateOrder() {
+    const hasSoup = selectedDishes.soup !== null;
+    const hasMain = selectedDishes.main !== null;
+    const hasSalad = selectedDishes.salad !== null;
+    const hasDrink = selectedDishes.drink !== null;
+    const hasDessert = selectedDishes.dessert !== null;
+    
+    // Проверяем, соответствует ли заказ одному из комбо
+    const combo1 = hasSoup && hasMain && hasSalad && hasDrink;
+    const combo2 = hasSoup && hasMain && hasDrink;
+    const combo3 = hasSoup && hasSalad && hasDrink;
+    const combo4 = hasMain && hasSalad && hasDrink;
+    const combo5 = hasMain && hasDrink;
+    
+    const isValidCombo = combo1 || combo2 || combo3 || combo4 || combo5;
+    
+    // Если заказ не соответствует ни одному комбо, показываем уведомление
+    if (!isValidCombo) {
+        let notificationType = '';
+        
+        if (!hasSoup && !hasMain && !hasSalad && !hasDrink && !hasDessert) {
+            // Ничего не выбрано
+            notificationType = 'nothing';
+        } else if (hasSoup && hasMain && hasSalad && !hasDrink) {
+            // Выбраны все необходимые блюда, кроме напитка
+            notificationType = 'drink';
+        } else if (hasSoup && !hasMain && !hasSalad) {
+            // Выбран суп, но не выбраны главное блюдо/салат/стартер
+            notificationType = 'main_or_salad';
+        } else if (!hasSoup && !hasMain && hasSalad) {
+            // Выбран салат/стартер, но не выбраны суп/главное блюдо
+            notificationType = 'soup_or_main';
+        } else if ((hasDrink || hasDessert) && !hasMain) {
+            // Выбран напиток/десерт, но не выбрано главное блюдо
+            notificationType = 'main';
+        } else {
+            // Общий случай - не соответствует ни одному комбо
+            notificationType = 'general';
+        }
+        
+        showNotification(notificationType);
+        return false;
+    }
+    
+    return true;
+}
+
+// Функция для показа уведомления
+function showNotification(type) {
+    // Создаем оверлей
+    const overlay = document.createElement('div');
+    overlay.className = 'notification-overlay';
+    
+    // Создаем уведомление
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    
+    // Определяем текст и изображение в зависимости от типа уведомления
+    let text = '';
+    let imageContent = '';
+    
+    switch(type) {
+        case 'nothing':
+            text = 'Ничего не выбрано. Выберите блюда для заказа';
+            imageContent = '<img src="D:\\Политех\\Веб\\icons\\main.png" alt="Блюдо" style="width: 60px; height: 60px;">';
+            break;
+        case 'drink':
+            text = 'Выберите напиток';
+            imageContent = '<img src="D:\\Политех\\Веб\\icons\\drink.png" alt="Напиток" style="width: 60px; height: 60px;">';
+            break;
+        case 'main_or_salad':
+            text = 'Выберите главное блюдо/салат/стартер';
+            imageContent = '<img src="D:\\Политех\\Веб\\icons\\main.png" alt="Главное блюдо" style="width: 60px; height: 60px;">';
+            break;
+        case 'soup_or_main':
+            text = 'Выберите суп или главное блюдо';
+            imageContent = '<img src="D:\\Политех\\Веб\\icons\\soup.png" alt="Суп" style="width: 60px; height: 60px;">';
+            break;
+        case 'main':
+            text = 'Выберите главное блюдо';
+            imageContent = '<img src="D:\\Политех\\Веб\\icons\\main.png" alt="Главное блюдо" style="width: 60px; height: 60px;">';
+            break;
+        default:
+            text = 'Ваш заказ не соответствует ни одному из доступных комбо. Пожалуйста, выберите блюда согласно одному из вариантов комбо.';
+            imageContent = '<img src="D:\\Политех\\Веб\\icons\\main.png" alt="Комбо" style="width: 60px; height: 60px;">';
+    }
+    
+    notification.innerHTML = `
+        <div class="notification-image">${imageContent}</div>
+        <div class="notification-text">${text}</div>
+        <button class="notification-btn">Окей</button>
+    `;
+    
+    // Добавляем уведомление в оверлей
+    overlay.appendChild(notification);
+    
+    // Добавляем оверлей на страницу
+    document.body.appendChild(overlay);
+    
+    // Обработчик для кнопки "Окей"
+    const okButton = notification.querySelector('.notification-btn');
+    okButton.addEventListener('click', () => {
+        document.body.removeChild(overlay);
+    });
+    
+    // Обработчик для закрытия при клике вне уведомления
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            document.body.removeChild(overlay);
+        }
+    });
+}
+        // Функция для выбора блюда
+        function selectDish(dish) {
+            // Сохраняем выбранное блюдо в соответствующей категории
+            selectedDishes[dish.category] = dish;
+            
+            // Обновляем отображение заказа
+            updateOrderSummary();
+        }
+
+        // Функция для обновления сводки заказа
+        function updateOrderSummary() {
+            const orderSummary = document.getElementById('order-summary');
+            orderSummary.innerHTML = '';
+            
+            // Проверка, есть ли выбранные блюда
+            const hasSelectedDishes = Object.values(selectedDishes).some(dish => dish !== null);
+            
+            if (!hasSelectedDishes) {
+                orderSummary.innerHTML = '<div class="no-selection">Ничего не выбрано</div>';
+                return;
+            }
+            
+            // выбранные блюда по категориям
+            const categories = [
+                { key: 'soup', title: 'Суп' },
+                { key: 'main', title: 'Главное блюдо' },
+                { key: 'salad', title: 'Салат или стартер' },
+                { key: 'drink', title: 'Напиток' },
+                { key: 'dessert', title: 'Десерт' }
+            ];
+            
+            let totalPrice = 0;
+            
+            categories.forEach(category => {
+                const dish = selectedDishes[category.key];
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'order-item';
+                
+                if (dish) {
+                    categoryDiv.innerHTML = `
+                        <div class="order-category">${category.title}</div>
+                        <div class="order-dish">
+                            <span>${dish.name}</span>
+                            <span>${dish.price}Р</span>
+                        </div>
+                    `;
+                    totalPrice += dish.price;
+                } else {
+                    const notSelectedText = category.key === 'drink' ? 'Напиток не выбран' : 'Блюдо не выбрано';
+                    categoryDiv.innerHTML = `
+                        <div class="order-category">${category.title}</div>
+                        <div class="no-selection">${notSelectedText}</div>
+                    `;
+                }
+                
+                orderSummary.appendChild(categoryDiv);
+            });
+            
+            // общая стоимость
+            if (totalPrice > 0) {
+                const totalDiv = document.createElement('div');
+                totalDiv.className = 'order-total';
+                totalDiv.innerHTML = `
+                    <div class="order-dish">
+                        <span>Стоимость заказа</span>
+                        <span>${totalPrice}Р</span>
+                    </div>
+                `;
+                orderSummary.appendChild(totalDiv);
+            }
+        }
+
+        // Функция для отрисовки блюд по категориям
+        function renderDishesByCategory(dishesArray, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const filterType = containerId.replace('-container', '');
+            const filteredDishes = filterDishes(dishesArray, activeFilters[filterType]);
+            
+            filteredDishes.forEach(dish => {
+                const dishCard = createDishCard(dish);
+                container.appendChild(dishCard);
+            });
+        }
+
+        // Функция для отображения блюд на странице
+        async function renderDishes() {
+            // Если блюда еще не загружены, загружаем их
+            if (allDishes.length === 0) {
+                // Загружаем блюда с API
+                const apiDishes = await loadDishes();
+                
+                if (apiDishes && apiDishes.length > 0) {
+                    console.log('Используем данные с API');
+                    // Преобразуем данные API в формат, совместимый с существующей структурой
+                    allDishes = apiDishes.map(dish => ({
+                        keyword: dish.keyword,
+                        name: dish.name,
+                        price: dish.price,
+                        category: mapCategory(dish.category),
+                        count: dish.count,
+                        image: dish.image,
+                        kind: dish.kind
+                    }));
+                } else {
+                    console.log('Используем локальные данные');
+                    allDishes = localDishes;
+                }
+            }
+            
+            // Сортируем блюда по категориям
+            const soups = sortDishesAlphabetically(allDishes.filter(dish => dish.category === 'soup'));
+            const mainDishes = sortDishesAlphabetically(allDishes.filter(dish => dish.category === 'main'));
+            const salads = sortDishesAlphabetically(allDishes.filter(dish => dish.category === 'salad'));
+            const drinks = sortDishesAlphabetically(allDishes.filter(dish => dish.category === 'drink'));
+            const desserts = sortDishesAlphabetically(allDishes.filter(dish => dish.category === 'dessert'));
+            
+            // Отрисовываем блюда
+            renderDishesByCategory(soups, 'soups-container');
+            renderDishesByCategory(mainDishes, 'main-dishes-container');
+            renderDishesByCategory(salads, 'salads-container');
+            renderDishesByCategory(drinks, 'drinks-container');
+            renderDishesByCategory(desserts, 'desserts-container');
+        }
+
+        // Функция для инициализации фильтров
+        function initFilters() {
+            // Супы
+            const soupFilters = document.getElementById('soup-filters');
+            soupFilters.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    const filterKind = e.target.getAttribute('data-kind');
+                    activeFilters.soup = filterKind;
+                    
+                    // Обновляем активный класс
+                    document.querySelectorAll('#soup-filters .filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                    
+                    // Перерисовываем блюда
+                    renderDishes();
+                }
+            });
+
+            // Главные блюда
+            const mainFilters = document.getElementById('main-filters');
+            mainFilters.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    const filterKind = e.target.getAttribute('data-kind');
+                    activeFilters.main = filterKind;
+                    
+                    // Обновляем активный класс
+                    document.querySelectorAll('#main-filters .filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                    
+                    // Перерисовываем блюда
+                    renderDishes();
+                }
+            });
+
+            // Салаты
+            const saladFilters = document.getElementById('salad-filters');
+            saladFilters.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    const filterKind = e.target.getAttribute('data-kind');
+                    activeFilters.salad = filterKind;
+                    
+                    // Обновляем активный класс
+                    document.querySelectorAll('#salad-filters .filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                    
+                    // Перерисовываем блюда
+                    renderDishes();
+                }
+            });
+
+            // Напитки
+            const drinkFilters = document.getElementById('drink-filters');
+            drinkFilters.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    const filterKind = e.target.getAttribute('data-kind');
+                    activeFilters.drink = filterKind;
+                    
+                    // Обновляем активный класс
+                    document.querySelectorAll('#drink-filters .filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                    
+                    // Перерисовываем блюда
+                    renderDishes();
+                }
+            });
+
+            // Десерты
+            const dessertFilters = document.getElementById('dessert-filters');
+            dessertFilters.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    const filterKind = e.target.getAttribute('data-kind');
+                    activeFilters.dessert = filterKind;
+                    
+                    // Обновляем активный класс
+                    document.querySelectorAll('#dessert-filters .filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                    
+                    // Перерисовываем блюда
+                    renderDishes();
+                }
+            });
+        }
+
+        // Функция для проверки заказа
+        function validateOrder() {
+            const hasSoup = selectedDishes.soup !== null;
+            const hasMain = selectedDishes.main !== null;
+            const hasSalad = selectedDishes.salad !== null;
+            const hasDrink = selectedDishes.drink !== null;
+            const hasDessert = selectedDishes.dessert !== null;
+            
+            // Проверяем, соответствует ли заказ одному из комбо
+            const combo1 = hasSoup && hasMain && hasSalad && hasDrink;
+            const combo2 = hasSoup && hasMain && hasDrink;
+            const combo3 = hasSoup && hasSalad && hasDrink;
+            const combo4 = hasMain && hasSalad && hasDrink;
+            const combo5 = hasMain && hasDrink;
+            
+            const isValidCombo = combo1 || combo2 || combo3 || combo4 || combo5;
+            
+            // Если заказ не соответствует ни одному комбо, показываем уведомление
+            if (!isValidCombo) {
+                let notificationType = '';
+                
+                if (!hasSoup && !hasMain && !hasSalad && !hasDrink && !hasDessert) {
+                    // Ничего не выбрано
+                    notificationType = 'nothing';
+                } else if (hasSoup && hasMain && hasSalad && !hasDrink) {
+                    // Выбраны все необходимые блюда, кроме напитка
+                    notificationType = 'drink';
+                } else if (hasSoup && !hasMain && !hasSalad) {
+                    // Выбран суп, но не выбраны главное блюдо/салат/стартер
+                    notificationType = 'main_or_salad';
+                } else if (!hasSoup && !hasMain && hasSalad) {
+                    // Выбран салат/стартер, но не выбраны суп/главное блюдо
+                    notificationType = 'soup_or_main';
+                } else if ((hasDrink || hasDessert) && !hasMain) {
+                    // Выбран напиток/десерт, но не выбрано главное блюдо
+                    notificationType = 'main';
+                } else {
+                    // Общий случай - не соответствует ни одному комбо
+                    notificationType = 'general';
+                }
+                
+                showNotification(notificationType);
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Функция для показа уведомления
+        function showNotification(type) {
+            // Создаем оверлей
+            const overlay = document.createElement('div');
+            overlay.className = 'notification-overlay';
+            
+            // Создаем уведомление
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            // Определяем текст и изображение в зависимости от типа уведомления
+            let text = '';
+            let imageContent = '';
+            
+            switch(type) {
+                case 'nothing':
+                    text = 'Ничего не выбрано. Выберите блюда для заказа';
+                    imageContent = '<img src="D:\\Политех\\Веб\\icons\\main.png" alt="Блюдо" style="width: 60px; height: 60px;">';
+                    break;
+                case 'drink':
+                    text = 'Выберите напиток';
+                    imageContent = '<img src="D:\\Политех\\Веб\\icons\\drink.png" alt="Напиток" style="width: 60px; height: 60px;">';
+                    break;
+                case 'main_or_salad':
+                    text = 'Выберите главное блюдо/салат/стартер';
+                    imageContent = '<img src="D:\\Политех\\Веб\\icons\\main.png" alt="Главное блюдо" style="width: 60px; height: 60px;">';
+                    break;
+                case 'soup_or_main':
+                    text = 'Выберите суп или главное блюдо';
+                    imageContent = '<img src="D:\\Политех\\Веб\\icons\\soup.png" alt="Суп" style="width: 60px; height: 60px;">';
+                    break;
+                case 'main':
+                    text = 'Выберите главное блюдо';
+                    imageContent = '<img src="D:\\Политех\\Веб\\icons\\main.png" alt="Главное блюдо" style="width: 60px; height: 60px;">';
+                    break;
+                default:
+                    text = 'Ваш заказ не соответствует ни одному из доступных комбо. Пожалуйста, выберите блюда согласно одному из вариантов комбо.';
+                    imageContent = '<img src="D:\\Политех\\Веб\\icons\\main.png" alt="Комбо" style="width: 60px; height: 60px;">';
+            }
+            
+            notification.innerHTML = `
+                <div class="notification-image">${imageContent}</div>
+                <div class="notification-text">${text}</div>
+                <button class="notification-btn">Окей</button>
+            `;
+            
+            // Добавляем уведомление в оверлей
+            overlay.appendChild(notification);
+            
+            // Добавляем оверлей на страницу
+            document.body.appendChild(overlay);
+            
+            // Обработчик для кнопки "Окей"
+            const okButton = notification.querySelector('.notification-btn');
+            okButton.addEventListener('click', () => {
+                document.body.removeChild(overlay);
+            });
+            
+            // Обработчик для закрытия при клике вне уведомления
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    document.body.removeChild(overlay);
+                }
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Устанавливаем активный класс для кнопки "Все" в каждом фильтре
+            document.querySelectorAll('.filters .filter-btn[data-kind="all"]').forEach(btn => {
+                btn.classList.add('active');
+            });
+            
+            // Загружаем и отображаем блюда
+            await renderDishes();
+            updateOrderSummary();
+            initFilters();
+            
+            // Обработчик отправки формы
+            const orderForm = document.getElementById('order-form-element');
+            orderForm.addEventListener('submit', (e) => {
+                if (!validateOrder()) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
